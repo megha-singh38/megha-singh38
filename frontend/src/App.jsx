@@ -9,7 +9,6 @@ import Experience from './components/Experience'
 import Contact from './components/Contact'
 import Resume from './components/Resume'
 import PeseAssessment from './components/PeseAssessment'
-import DebugAssets from './components/DebugAssets'
 import about from './data/about.json'
 import projects from './data/projects.json'
 import skills from './data/skills.json'
@@ -237,8 +236,6 @@ export default function App() {
                 <Resume />
                 <hr className="section-divider" />
                 <Contact data={about} />
-                <hr className="section-divider" />
-                <DebugAssets />
             </main>
 
             {/* Loader overlay on top — slides up to reveal */}
