@@ -1,14 +1,13 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
-// ── Replace these with your actual image imports or URLs ──
 const ESSAY_PAGES = [
     '/pese/essay-page-1.jpeg',
     '/pese/essay-page-2.jpeg',
     '/pese/essay-page-3.jpeg',
 ]
 
-const VIDEO_SRC = '/pese/self-intro.mp4'
+const YOUTUBE_ID = 'YOUR_YOUTUBE_VIDEO_ID'
 
 /* ─── Canvas Page-Curl Book Viewer ─── */
 function useImage(src) {
@@ -37,6 +36,7 @@ function BookViewer() {
         let loaded = 0
         ESSAY_PAGES.forEach((src, i) => {
             const img = new Image()
+            img.crossOrigin = 'anonymous'
             img.onload = () => {
                 loaded++
                 setImagesReady(loaded)
@@ -282,213 +282,17 @@ function BookViewer() {
     )
 }
 
-/* ─── Aesthetic Video Player ─── */
+/* ─── YouTube Video Player ─── */
 function VideoPlayer() {
-    const videoRef = useRef(null)
-    const progressRef = useRef(null)
-    const [playing, setPlaying] = useState(false)
-    const [progress, setProgress] = useState(0)
-    const [duration, setDuration] = useState(0)
-    const [currentTime, setCurrentTime] = useState(0)
-    const [muted, setMuted] = useState(false)
-    const [volume, setVolume] = useState(1)
-    const [showControls, setShowControls] = useState(true)
-    const [fullscreen, setFullscreen] = useState(false)
-    const [aspectRatio, setAspectRatio] = useState(null)
-    const hideTimer = useRef(null)
-    const containerRef = useRef(null)
-
-    const fmt = (s) => {
-        const m = Math.floor(s / 60)
-        const sec = Math.floor(s % 60)
-        return `${m}:${sec.toString().padStart(2, '0')}`
-    }
-
-    const resetHideTimer = () => {
-        setShowControls(true)
-        clearTimeout(hideTimer.current)
-        if (playing) {
-            hideTimer.current = setTimeout(() => setShowControls(false), 2500)
-        }
-    }
-
-    const togglePlay = () => {
-        const v = videoRef.current
-        if (!v) return
-        if (v.paused) { v.play(); setPlaying(true) }
-        else { v.pause(); setPlaying(false) }
-        resetHideTimer()
-    }
-
-    const onTimeUpdate = () => {
-        const v = videoRef.current
-        if (!v) return
-        setCurrentTime(v.currentTime)
-        setProgress((v.currentTime / v.duration) * 100 || 0)
-    }
-
-    const onLoadedMetadata = () => {
-        const v = videoRef.current
-        if (!v) return
-        setDuration(v.duration || 0)
-        if (v.videoWidth && v.videoHeight) {
-            setAspectRatio(v.videoWidth / v.videoHeight)
-        }
-    }
-
-    const seek = (e) => {
-        const rect = progressRef.current.getBoundingClientRect()
-        const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
-        videoRef.current.currentTime = ratio * videoRef.current.duration
-    }
-
-    const toggleMute = () => {
-        videoRef.current.muted = !muted
-        setMuted(!muted)
-    }
-
-    const changeVolume = (e) => {
-        const v = parseFloat(e.target.value)
-        videoRef.current.volume = v
-        setVolume(v)
-        setMuted(v === 0)
-    }
-
-    const toggleFullscreen = () => {
-        if (!document.fullscreenElement) {
-            containerRef.current?.requestFullscreen()
-            setFullscreen(true)
-        } else {
-            document.exitFullscreen()
-            setFullscreen(false)
-        }
-    }
-
-    useEffect(() => {
-        const handler = () => setFullscreen(!!document.fullscreenElement)
-        document.addEventListener('fullscreenchange', handler)
-        return () => {
-            document.removeEventListener('fullscreenchange', handler)
-            clearTimeout(hideTimer.current)
-        }
-    }, [])
-
     return (
-        <div
-            ref={containerRef}
-            className={`vp-container ${playing && !showControls ? 'vp-hide-cursor' : ''}`}
-            style={aspectRatio ? { aspectRatio: String(aspectRatio) } : {}}
-            onMouseMove={resetHideTimer}
-            onMouseLeave={() => playing && setShowControls(false)}
-        >
-            {/* Ambient glow */}
-            <div className="vp-glow" />
-
-            <video
-                ref={videoRef}
-                src={VIDEO_SRC}
-                className="vp-video"
-                onTimeUpdate={onTimeUpdate}
-                onLoadedMetadata={onLoadedMetadata}
-                onEnded={() => { setPlaying(false); setShowControls(true) }}
-                onClick={togglePlay}
-                playsInline
+        <div className="vp-container">
+            <iframe
+                src={`https://www.youtube.com/embed/${YOUTUBE_ID}?rel=0&modestbranding=1`}
+                title="Self Introduction"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', zIndex: 1 }}
             />
-
-            {/* Big play button overlay when paused */}
-            <AnimatePresence>
-                {!playing && (
-                    <motion.button
-                        className="vp-big-play"
-                        onClick={togglePlay}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
-                        transition={{ duration: 0.2 }}
-                        aria-label="Play"
-                    >
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                            <polygon points="5,3 19,12 5,21" />
-                        </svg>
-                    </motion.button>
-                )}
-            </AnimatePresence>
-
-            {/* Controls bar */}
-            <motion.div
-                className="vp-controls"
-                animate={{ opacity: showControls ? 1 : 0, y: showControls ? 0 : 8 }}
-                transition={{ duration: 0.25 }}
-            >
-                {/* Progress bar */}
-                <div
-                    ref={progressRef}
-                    className="vp-progress-track"
-                    onClick={seek}
-                    role="slider"
-                    aria-label="Seek"
-                >
-                    <div className="vp-progress-fill" style={{ width: `${progress}%` }}>
-                        <div className="vp-progress-thumb" />
-                    </div>
-                </div>
-
-                <div className="vp-controls-row">
-                    {/* Play/Pause */}
-                    <button className="vp-btn" onClick={togglePlay} aria-label={playing ? 'Pause' : 'Play'}>
-                        {playing ? (
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" />
-                            </svg>
-                        ) : (
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <polygon points="5,3 19,12 5,21" />
-                            </svg>
-                        )}
-                    </button>
-
-                    {/* Volume */}
-                    <div className="vp-volume-group">
-                        <button className="vp-btn" onClick={toggleMute} aria-label="Toggle mute">
-                            {muted || volume === 0 ? (
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" />
-                                    <line x1="23" y1="9" x2="17" y2="15" /><line x1="17" y1="9" x2="23" y2="15" />
-                                </svg>
-                            ) : (
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" />
-                                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-                                </svg>
-                            )}
-                        </button>
-                        <input
-                            type="range" min="0" max="1" step="0.05"
-                            value={muted ? 0 : volume}
-                            onChange={changeVolume}
-                            className="vp-volume-slider"
-                            aria-label="Volume"
-                        />
-                    </div>
-
-                    {/* Time */}
-                    <span className="vp-time">{fmt(currentTime)} / {fmt(duration)}</span>
-
-                    {/* Fullscreen */}
-                    <button className="vp-btn vp-btn-right" onClick={toggleFullscreen} aria-label="Fullscreen">
-                        {fullscreen ? (
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
-                            </svg>
-                        ) : (
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
-                            </svg>
-                        )}
-                    </button>
-                </div>
-            </motion.div>
         </div>
     )
 }
