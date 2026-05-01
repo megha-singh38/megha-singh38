@@ -25,12 +25,46 @@ async function probe(url) {
   }
 }
 
+async function sniff(url) {
+  try {
+    const res = await fetch(url, {
+      method: 'GET',
+      cache: 'no-store',
+      headers: { Range: 'bytes=0-63' },
+    })
+
+    const buf = await res.arrayBuffer()
+    const bytes = new Uint8Array(buf)
+    const ascii = Array.from(bytes)
+      .map((b) => (b >= 32 && b <= 126 ? String.fromCharCode(b) : '.'))
+      .join('')
+
+    // Cheap signatures
+    const isPdf = ascii.startsWith('%PDF-')
+    const isHtml = ascii.toLowerCase().includes('<!doctype html') || ascii.toLowerCase().includes('<html')
+    const isJpeg = bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
+
+    return {
+      ok: res.ok,
+      status: res.status,
+      contentType: res.headers.get('content-type') || '',
+      contentLength: res.headers.get('content-length') || '',
+      signature: isPdf ? 'PDF' : isJpeg ? 'JPEG' : isHtml ? 'HTML' : 'UNKNOWN',
+      first64: ascii,
+    }
+  } catch (e) {
+    return { ok: false, status: 0, contentType: '', contentLength: '', signature: 'ERROR', first64: String(e?.message || e) }
+  }
+}
+
 function Row({ label, url }) {
   const [result, setResult] = useState(null)
+  const [sniffed, setSniffed] = useState(null)
 
   useEffect(() => {
     let alive = true
     probe(url).then((r) => alive && setResult(r))
+    sniff(url).then((r) => alive && setSniffed(r))
     return () => { alive = false }
   }, [url])
 
@@ -46,6 +80,11 @@ function Row({ label, url }) {
         {result
           ? `${result.ok ? 'OK' : 'FAIL'} · ${result.method} · ${result.status} ${result.statusText} · ${result.contentType || 'no content-type'}${result.contentLength ? ` · ${result.contentLength} bytes` : ''}`
           : 'Checking...'}
+      </div>
+      <div style={{ marginTop: 6, fontFamily: 'var(--font-mono)', fontSize: 12, opacity: 0.75 }}>
+        {sniffed
+          ? `Sniff: ${sniffed.signature} · ${sniffed.status} · ${sniffed.contentType || 'no content-type'}${sniffed.contentLength ? ` · ${sniffed.contentLength} bytes` : ''}`
+          : 'Sniffing...'}
       </div>
     </div>
   )
