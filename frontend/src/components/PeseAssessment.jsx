@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 
+const base = import.meta.env.BASE_URL || '/'
+const withBase = (path) => `${base}${String(path).replace(/^\//, '')}`
+
 const ESSAY_PAGES = [
-    new URL('pese/essay-page-1.jpeg', import.meta.env.BASE_URL).toString(),
-    new URL('pese/essay-page-2.jpeg', import.meta.env.BASE_URL).toString(),
-    new URL('pese/essay-page-3.jpeg', import.meta.env.BASE_URL).toString(),
+    withBase('pese/essay-page-1.jpeg'),
+    withBase('pese/essay-page-2.jpeg'),
+    withBase('pese/essay-page-3.jpeg'),
 ]
 
 const YOUTUBE_ID = 'WCh_DGHHG14'
