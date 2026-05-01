@@ -11,6 +11,7 @@ const ESSAY_PAGES = [
 ]
 
 const YOUTUBE_ID = 'WCh_DGHHG14'
+const SELF_INTRO_MP4 = withBase('pese/self-intro.mp4')
 
 /* ─── Canvas Page-Curl Book Viewer ─── */
 function useImage(src) {
@@ -39,7 +40,6 @@ function BookViewer() {
     useEffect(() => {
         ESSAY_PAGES.forEach((src, i) => {
             const img = new Image()
-            img.crossOrigin = 'anonymous'
             img.onload = () => {
                 loaded.current[i] = true
                 setImagesReady(n => n + 1)
@@ -288,17 +288,24 @@ function BookViewer() {
     )
 }
 
-/* ─── YouTube Video Player ─── */
 function VideoPlayer() {
     return (
         <div className="vp-container">
-            <iframe
-                src={`https://www.youtube.com/embed/${YOUTUBE_ID}?rel=0&modestbranding=1`}
-                title="Self Introduction"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', zIndex: 1 }}
+            <video
+                controls
+                preload="metadata"
+                src={SELF_INTRO_MP4}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', zIndex: 1, objectFit: 'cover' }}
             />
+            <a
+                href={`https://www.youtube.com/watch?v=${YOUTUBE_ID}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-link"
+                style={{ position: 'absolute', right: 12, bottom: 12, zIndex: 2 }}
+            >
+                Open on YouTube
+            </a>
         </div>
     )
 }
