@@ -235,5 +235,7 @@ motto: "Ship it, measure it, improve it."
 
 <!-- Footer Wave -->
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:e8d5a8,50:c9a96e,100:1a1a2e&height=100&section=footer" width="100%"/>
-
+test text
 </div>
+
+
