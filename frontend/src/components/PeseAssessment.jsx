@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 
-import page1Url from '../assets/pese/essay-page-1.jpeg?url'
-import page2Url from '../assets/pese/essay-page-2.jpeg?url'
-import page3Url from '../assets/pese/essay-page-3.jpeg?url'
+import page1Url from '../assets/pese/essay-page-1.png?url'
+import page2Url from '../assets/pese/essay-page-2.png?url'
+import page3Url from '../assets/pese/essay-page-3.png?url'
 
 const ESSAY_PAGES = [page1Url, page2Url, page3Url]
 
@@ -49,7 +49,9 @@ function BookViewer() {
     const draw = useCallback(() => {
         const canvas = canvasRef.current
         if (!canvas) return
-        const ctx = canvas.getContext('2d')
+        const ctx = canvas.getContext('2d', { alpha: false })
+        ctx.imageSmoothingEnabled = true
+        ctx.imageSmoothingQuality = 'high'
         const W = canvas.width
         const H = canvas.height
         const fs = flipState.current
