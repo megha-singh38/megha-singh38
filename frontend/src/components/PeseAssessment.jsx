@@ -7,7 +7,7 @@ const ESSAY_PAGES = [
     '/pese/essay-page-3.jpeg',
 ]
 
-const YOUTUBE_ID = 'YOUR_YOUTUBE_VIDEO_ID'
+const YOUTUBE_ID = 'WCh_DGHHG14'
 
 /* ─── Canvas Page-Curl Book Viewer ─── */
 function useImage(src) {
@@ -31,16 +31,17 @@ function BookViewer() {
 
     // Preload all images
     const images = useRef([])
+    const loaded = useRef([])
     const [imagesReady, setImagesReady] = useState(0)
     useEffect(() => {
-        let loaded = 0
         ESSAY_PAGES.forEach((src, i) => {
             const img = new Image()
             img.crossOrigin = 'anonymous'
             img.onload = () => {
-                loaded++
-                setImagesReady(loaded)
+                loaded.current[i] = true
+                setImagesReady(n => n + 1)
             }
+            img.onerror = () => { loaded.current[i] = false }
             img.src = src
             images.current[i] = img
         })
@@ -60,10 +61,12 @@ function BookViewer() {
         const nextIdx = currentPage + fs.direction
         const nextImg = images.current[nextIdx]
 
+        const canDraw = (img, idx) => img && loaded.current[idx] === true
+
         // ── Draw base page (destination) ──
-        if (fs.active && nextImg?.complete) {
+        if (fs.active && canDraw(nextImg, nextIdx)) {
             ctx.drawImage(nextImg, 0, 0, W, H)
-        } else if (currentImg?.complete) {
+        } else if (canDraw(currentImg, currentPage)) {
             ctx.drawImage(currentImg, 0, 0, W, H)
         }
 
@@ -90,7 +93,7 @@ function BookViewer() {
             ctx.rect(foldX, 0, W - foldX, H)
         }
         ctx.clip()
-        if (currentImg?.complete) ctx.drawImage(currentImg, 0, 0, W, H)
+        if (canDraw(currentImg, currentPage)) ctx.drawImage(currentImg, 0, 0, W, H)
         ctx.restore()
 
         // ── Draw the folded flap (perspective-squished) ──
@@ -112,17 +115,17 @@ function BookViewer() {
             ctx.rect(foldX, 0, flapDrawW, H)
             ctx.clip()
             // Draw current page squished into flap area
-            if (currentImg?.complete) {
+            if (canDraw(currentImg, currentPage)) {
                 ctx.drawImage(currentImg,
-                    dir > 0 ? W - flapWidth : 0, 0, flapWidth, H,  // source: the turning portion
-                    foldX, 0, flapDrawW, H                           // dest: squished
+                    dir > 0 ? W - flapWidth : 0, 0, flapWidth, H,
+                    foldX, 0, flapDrawW, H
                 )
             }
         } else {
             ctx.beginPath()
             ctx.rect(foldX - flapDrawW, 0, flapDrawW, H)
             ctx.clip()
-            if (currentImg?.complete) {
+            if (canDraw(currentImg, currentPage)) {
                 ctx.drawImage(currentImg,
                     0, 0, flapWidth, H,
                     foldX - flapDrawW, 0, flapDrawW, H
