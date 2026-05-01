@@ -2,9 +2,11 @@
     "buildCommand": "npm run build",
     "outputDirectory": "dist",
     "framework": "vite",
-    "routes": [
-        { "handle": "filesystem" },
-        { "src": "/(.*)", "dest": "/index.html" }
+    "rewrites": [
+        {
+            "source": "/((?!assets/|pese/|.*\\.(?:pdf|jpe?g|png|webp|gif|svg|ico|mp4|css|js|map|txt|json|xml)$).*)",
+            "destination": "/index.html"
+        }
     ],
     "headers": [
         {
