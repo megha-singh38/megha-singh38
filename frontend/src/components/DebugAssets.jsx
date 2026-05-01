@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import resumePdfUrl from '../assets/MeghaResumeSWE.pdf?url'
+import page1Url from '../assets/pese/essay-page-1.jpeg?url'
+import page2Url from '../assets/pese/essay-page-2.jpeg?url'
+import page3Url from '../assets/pese/essay-page-3.jpeg?url'
+
 function joinBase(path) {
   const base = import.meta.env.BASE_URL || '/'
   return `${base}${String(path).replace(/^\//, '')}`
@@ -93,10 +98,10 @@ function Row({ label, url }) {
 export default function DebugAssets() {
   const baseUrl = import.meta.env.BASE_URL || '/'
   const urls = useMemo(() => ({
-    pdf: joinBase('MeghaResumeSWE.pdf'),
-    img1: joinBase('pese/essay-page-1.jpeg'),
-    img2: joinBase('pese/essay-page-2.jpeg'),
-    img3: joinBase('pese/essay-page-3.jpeg'),
+    pdf: resumePdfUrl,
+    img1: page1Url,
+    img2: page2Url,
+    img3: page3Url,
   }), [])
 
   return (

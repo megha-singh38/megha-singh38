@@ -1,10 +1,10 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
-const base = import.meta.env.BASE_URL || '/'
-const withBase = (path) => `${base}${String(path).replace(/^\//, '')}`
-const RESUME_PDF = withBase('MeghaResumeSWE.pdf')
-const RESUME_SRC = `${RESUME_PDF}#view=FitH&toolbar=0&navpanes=0`
+import resumePdfUrl from '../assets/MeghaResumeSWE.pdf?url'
+
+const RESUME_PDF = resumePdfUrl
+const RESUME_SRC = `${resumePdfUrl}#view=FitH&toolbar=0&navpanes=0`
 
 export default function Resume() {
     const ref = useRef(null)
