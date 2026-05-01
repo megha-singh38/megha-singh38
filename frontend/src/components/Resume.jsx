@@ -1,7 +1,8 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
-const RESUME_PDF = '/MeghaResumeSWE.pdf'
+const RESUME_PATH = 'MeghaResumeSWE.pdf'
+const RESUME_PDF = new URL(RESUME_PATH, import.meta.env.BASE_URL).toString()
 const RESUME_SRC = `${RESUME_PDF}#view=FitH&toolbar=0&navpanes=0`
 
 export default function Resume() {

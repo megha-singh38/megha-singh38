@@ -2,9 +2,9 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 
 const ESSAY_PAGES = [
-    '/pese/essay-page-1.jpeg',
-    '/pese/essay-page-2.jpeg',
-    '/pese/essay-page-3.jpeg',
+    new URL('pese/essay-page-1.jpeg', import.meta.env.BASE_URL).toString(),
+    new URL('pese/essay-page-2.jpeg', import.meta.env.BASE_URL).toString(),
+    new URL('pese/essay-page-3.jpeg', import.meta.env.BASE_URL).toString(),
 ]
 
 const YOUTUBE_ID = 'WCh_DGHHG14'
