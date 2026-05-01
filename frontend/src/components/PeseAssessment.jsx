@@ -49,9 +49,8 @@ function BookViewer() {
     const draw = useCallback(() => {
         const canvas = canvasRef.current
         if (!canvas) return
-        const ctx = canvas.getContext('2d', { alpha: false })
-        ctx.imageSmoothingEnabled = true
-        ctx.imageSmoothingQuality = 'high'
+        const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })
+        ctx.imageSmoothingEnabled = false
         const W = canvas.width
         const H = canvas.height
         const fs = flipState.current
@@ -222,8 +221,18 @@ function BookViewer() {
         if (!canvas) return
         const ro = new ResizeObserver(() => {
             const rect = canvas.parentElement.getBoundingClientRect()
-            canvas.width = rect.width
-            canvas.height = rect.width * (4 / 3) // 3:4 portrait ratio
+            const dpr = window.devicePixelRatio || 1
+            const displayWidth = rect.width
+            const displayHeight = rect.width * (4 / 3) // 3:4 portrait ratio
+            
+            // Set canvas internal size to match physical pixels
+            canvas.width = displayWidth * dpr
+            canvas.height = displayHeight * dpr
+            
+            // Set canvas display size
+            canvas.style.width = displayWidth + 'px'
+            canvas.style.height = displayHeight + 'px'
+            
             draw()
         })
         ro.observe(canvas.parentElement)
