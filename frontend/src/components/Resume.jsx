@@ -2,7 +2,7 @@ import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
 const RESUME_PDF = '/MeghaResumeSWE.pdf'
-const RESUME_SRC = `${RESUME_PDF}#view=FitH&toolbar=0`
+const RESUME_SRC = `${RESUME_PDF}#view=FitH&toolbar=0&navpanes=0`
 
 export default function Resume() {
     const ref = useRef(null)
@@ -90,6 +90,13 @@ export default function Resume() {
                                     loading="lazy"
                                 />
                                 <div className="resume-preview-fade" aria-hidden />
+                                {/* Fallback shown when iframe is blocked */}
+                                <div className="resume-fallback">
+                                    <p>PDF preview unavailable in this browser.</p>
+                                    <a href={RESUME_PDF} target="_blank" rel="noopener noreferrer" className="hero-link primary">
+                                        Open PDF →
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <p className="resume-preview-hint">

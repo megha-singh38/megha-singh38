@@ -3,10 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 // ── Replace these with your actual image imports or URLs ──
 const ESSAY_PAGES = [
-    '/pese/essay-page-1.jpg',
-    '/pese/essay-page-2.jpg',
-    '/pese/essay-page-3.jpg',
-    '/pese/essay-page-4.jpg',
+    '/pese/essay-page-1.jpeg',
+    '/pese/essay-page-2.jpeg',
+    '/pese/essay-page-3.jpeg',
 ]
 
 const VIDEO_SRC = '/pese/self-intro.mp4'
@@ -17,7 +16,6 @@ function useImage(src) {
     useEffect(() => {
         if (!src) return
         const i = new Image()
-        i.crossOrigin = 'anonymous'
         i.onload = () => setImg(i)
         i.src = src
     }, [src])
@@ -34,10 +32,15 @@ function BookViewer() {
 
     // Preload all images
     const images = useRef([])
+    const [imagesReady, setImagesReady] = useState(0)
     useEffect(() => {
+        let loaded = 0
         ESSAY_PAGES.forEach((src, i) => {
             const img = new Image()
-            img.crossOrigin = 'anonymous'
+            img.onload = () => {
+                loaded++
+                setImagesReady(loaded)
+            }
             img.src = src
             images.current[i] = img
         })
@@ -203,12 +206,11 @@ function BookViewer() {
         rafRef.current = requestAnimationFrame(tick)
     }, [draw])
 
-    // Redraw when page changes
+    // Redraw when page changes or images load
     useEffect(() => {
-        // Wait a tick for images to be ready
         const id = setTimeout(draw, 30)
         return () => clearTimeout(id)
-    }, [currentPage, draw])
+    }, [currentPage, draw, imagesReady])
 
     // Resize canvas to match container
     useEffect(() => {
@@ -292,6 +294,7 @@ function VideoPlayer() {
     const [volume, setVolume] = useState(1)
     const [showControls, setShowControls] = useState(true)
     const [fullscreen, setFullscreen] = useState(false)
+    const [aspectRatio, setAspectRatio] = useState(null)
     const hideTimer = useRef(null)
     const containerRef = useRef(null)
 
@@ -325,7 +328,12 @@ function VideoPlayer() {
     }
 
     const onLoadedMetadata = () => {
-        setDuration(videoRef.current?.duration || 0)
+        const v = videoRef.current
+        if (!v) return
+        setDuration(v.duration || 0)
+        if (v.videoWidth && v.videoHeight) {
+            setAspectRatio(v.videoWidth / v.videoHeight)
+        }
     }
 
     const seek = (e) => {
@@ -369,6 +377,7 @@ function VideoPlayer() {
         <div
             ref={containerRef}
             className={`vp-container ${playing && !showControls ? 'vp-hide-cursor' : ''}`}
+            style={aspectRatio ? { aspectRatio: String(aspectRatio) } : {}}
             onMouseMove={resetHideTimer}
             onMouseLeave={() => playing && setShowControls(false)}
         >
