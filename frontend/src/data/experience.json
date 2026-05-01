@@ -1,0 +1,14 @@
+[
+    {
+        "id": "peerprep",
+        "company": "Peerprep",
+        "role": "Software Engineering Intern",
+        "period": "Sep 2025 – Nov 2025",
+        "type": "Internship",
+        "highlights": [
+            "Built an automated ingestion engine using Python to standardize and extract data from unpredictable, multi-format academic documents",
+            "Implemented strict validation checks, reducing per-record processing time from 10 minutes to ~30 seconds while maintaining 99.98% extraction accuracy at scale"
+        ],
+        "tools": ["Python", "OpenCV", "OCR", "Git", "GitHub"]
+    }
+]

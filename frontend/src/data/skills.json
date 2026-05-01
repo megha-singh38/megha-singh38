@@ -1,0 +1,58 @@
+{
+    "categories": [
+        {
+            "name": "Languages & Core",
+            "skills": [
+                "Python",
+                "Java",
+                "SQL",
+                "TypeScript",
+                "Dart"
+            ]
+        },
+        {
+            "name": "Backend & Data Serving",
+            "skills": [
+                "FastAPI",
+                "Spring Boot",
+                "Flask",
+                "REST APIs",
+                "Microservices"
+            ]
+        },
+        {
+            "name": "Databases & Storage",
+            "skills": [
+                "PostgreSQL",
+                "MySQL",
+                "SQLite",
+                "Schema Design",
+                "Query Optimization"
+            ]
+        },
+        {
+            "name": "Data Processing & AI",
+            "skills": [
+                "PyTorch",
+                "OpenCV",
+                "YOLO",
+                "Custom Ingestion Scripts",
+                "OCR",
+                "Reinforcement Learning"
+            ]
+        },
+        {
+            "name": "Infrastructure & Tools",
+            "skills": [
+                "GCP",
+                "Docker",
+                "Git",
+                "GitHub",
+                "n8n",
+                "Postman",
+                "HuggingFace",
+                "Google Cloud Document AI"
+            ]
+        }
+    ]
+}

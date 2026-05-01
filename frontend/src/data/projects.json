@@ -1,0 +1,95 @@
+[
+    {
+        "id": "livana",
+        "title": "LivAna",
+        "subtitle": "Full-Stack Student Services Platform",
+        "date": "Jan 2026 – Present",
+        "problem": "Students typically juggle disconnected apps for PG stays, mess plans, and grocery needs, which creates fragmented service and poor operational visibility.",
+        "approach": "Spearheading data modeling and backend architecture for a multi-service platform. Designed a 14-table PostgreSQL schema and optimized read-heavy query patterns using targeted denormalization. Architected 58 Spring Boot REST API endpoints for low-latency, role-based data serving.",
+        "outcomes": [
+            "58 REST API endpoints in Spring Boot",
+            "14-table PostgreSQL schema with optimized read patterns",
+            "Low-latency role-based access for frontend consumption",
+            "Covers PG accommodations, mess meal plans, and grocery services"
+        ],
+        "techStack": [
+            "Java 21",
+            "Spring Boot",
+            "PostgreSQL 16",
+            "JWT",
+            "REST APIs"
+        ],
+        "github": null,
+        "demo": null,
+        "featured": true
+    },
+    {
+        "id": "credit-limit-rl",
+        "title": "AI-Driven Dynamic Credit Limit Optimization",
+        "subtitle": "AI-Driven Dynamic Credit Limit Optimization",
+        "date": "Jan 2026",
+        "problem": "Static credit policy rules react too slowly to behavior shifts and fail to optimize risk-adjusted portfolio performance in real time.",
+        "approach": "Engineered a high-throughput FastAPI backend handling 5,000+ events per minute with sub-second latency. Integrated a Double DQN PyTorch decision model directly into the event stream for real-time credit limit decisions under portfolio constraints.",
+        "outcomes": [
+            "5,000+ events/min processing throughput",
+            "Sub-second decision latency under streaming load",
+            "Real-time policy updates using Double DQN",
+            "Finalist — HackTheWinter National Hackathon"
+        ],
+        "techStack": [
+            "Python",
+            "PyTorch",
+            "Reinforcement Learning",
+            "FastAPI",
+            "MySQL"
+        ],
+        "github": null,
+        "demo": null,
+        "featured": true
+    },
+    {
+        "id": "doc-oc",
+        "title": "DOC-OC",
+        "subtitle": "Automated Marksheet Extraction System",
+        "date": "Sep 2025 – Oct 2025",
+        "problem": "Academic marksheets arrive in inconsistent formats, making manual extraction slow, unreliable, and difficult to scale in internship workflows.",
+        "approach": "Developed a custom parsing pipeline to ingest and extract structured information from multi-format documents using YOLO and Table Transformers. Built an async FastAPI backend to serve real-time extraction data, and deployed the system in production during internship.",
+        "outcomes": [
+            "Structured extraction from multi-format academic documents",
+            "Production deployment during internship",
+            "Async FastAPI backend for real-time serving"
+        ],
+        "techStack": [
+            "Python",
+            "FastAPI",
+            "YOLO",
+            "HuggingFace Table Transformers",
+            "MySQL"
+        ],
+        "github": null,
+        "demo": null,
+        "featured": true
+    },
+    {
+        "id": "cargo-laytime",
+        "title": "Cargo Laytime",
+        "subtitle": "Maritime SOF Document Processing",
+        "date": "Jul 2025 – Aug 2025",
+        "problem": "Unstructured maritime SOF documents require heavy manual effort to convert into reliable event timelines for operations and laytime analysis.",
+        "approach": "Developed a custom parsing system to transform raw maritime SOF documents into clean, structured relational event data with backend orchestration and production-minded validation.",
+        "outcomes": [
+            "Winner — MariTHON National Hackathon",
+            "Reduced manual processing time by 50%",
+            "Maintained 100% extraction accuracy",
+            "Deployed by Integrated Maritime Exchange"
+        ],
+        "techStack": [
+            "Python",
+            "FastAPI",
+            "Google Cloud Document AI"
+        ],
+        "github": null,
+        "demo": null,
+        "featured": true
+    }
+]

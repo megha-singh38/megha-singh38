@@ -1,0 +1,16 @@
+[
+    {
+        "id": "marathon-win",
+        "title": "1st Place — MariTHON National Hackathon",
+        "description": "Built and deployed an SOF extraction system for maritime workflows; reduced manual processing time by 50% and maintained 100% accuracy in production usage with Integrated Maritime Exchange.",
+        "type": "hackathon",
+        "mediaPlaceholder": true
+    },
+    {
+        "id": "hackthewinter",
+        "title": "Finalist — HackTheWinter National Hackathon",
+        "description": "Developed an AI-driven dynamic credit limit optimization system using reinforcement learning, designed for real-time decisioning on high-throughput event streams.",
+        "type": "hackathon",
+        "mediaPlaceholder": true
+    }
+]

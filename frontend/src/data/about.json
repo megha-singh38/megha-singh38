@@ -1,0 +1,17 @@
+{
+  "name": "Megha Singh",
+  "role": "Backend Engineer & AI/ML Developer",
+  "bio": "Final-year AI/ML student with a strong foundation in backend architecture and data-intensive systems. Experienced in building high-throughput data processing engines, designing complex relational databases, and shipping API layers for downstream applications from scratch to production.",
+  "email": "meghajarodiya@gmail.com",
+  "phone": "+91 93687 57223",
+  "location": "Dehradun, Uttarakhand - 248002",
+  "github": "https://github.com/megha-singh38",
+  "linkedin": "https://linkedin.com/in/meghasingh2004",
+  "resume": "/MeghaResumeSWE.pdf",
+  "education": {
+    "degree": "B.Tech Computer Science (AI/ML)",
+    "university": "Graphic Era Hill University, Dehradun",
+    "year": "2023 – 2027",
+    "result": "CGPA: 7.88 / 10.0"
+  }
+}
