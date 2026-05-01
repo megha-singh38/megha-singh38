@@ -11,7 +11,6 @@ const ESSAY_PAGES = [
 ]
 
 const YOUTUBE_ID = 'WCh_DGHHG14'
-const SELF_INTRO_MP4 = withBase('pese/self-intro.mp4')
 
 /* ─── Canvas Page-Curl Book Viewer ─── */
 function useImage(src) {
@@ -291,11 +290,12 @@ function BookViewer() {
 function VideoPlayer() {
     return (
         <div className="vp-container">
-            <video
-                controls
-                preload="metadata"
-                src={SELF_INTRO_MP4}
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', zIndex: 1, objectFit: 'cover' }}
+            <iframe
+                src={`https://www.youtube.com/embed/${YOUTUBE_ID}?rel=0&modestbranding=1`}
+                title="Self Introduction"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', zIndex: 1 }}
             />
             <a
                 href={`https://www.youtube.com/watch?v=${YOUTUBE_ID}`}
